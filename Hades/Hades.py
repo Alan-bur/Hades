@@ -3,6 +3,7 @@ from tkinter import messagebox
 import os
 import subprocess
 import time
+from pathlib import Path
 
 
 
@@ -241,9 +242,10 @@ ipconfig = Button(win, text="  IPCONFIG         ", font="Helvetica", image=ipcon
 driver = Button(win, text="  DRIVERQUERY   ", font="Helvetica 10", image=driverimg, bg="darkorange3", fg="white",
                   activeforeground="white", activebackground="sienna4", compound="left", width=width, height=height,
                   borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("driverquery", shell=True))
+app_data_path = Path(os.environ['appdata']).parent
 appdata = Button(win, text="  APPDATA       ", font="Helvetica", image=appdataimg, bg="indianred3", fg="white",
                   activeforeground="white", activebackground="indianred4", compound="left", width=width, height=height,
-                  borderwidth=0, highlightthickness=0,command=lambda: subprocess.Popen("start C:/Users/" + os.getlogin() + "/AppData", shell=True))
+                  borderwidth=0, highlightthickness=0,command=lambda: subprocess.Popen(f"start {app_data_path}", shell=True))
 
 disk = Button(win, text="  DISKMGMT       ", font="Helvetica", image=diskimg, bg="orchid1", fg="white",
                   activeforeground="white", activebackground="orchid4", compound="left", width=width, height=height,
