@@ -1,149 +1,385 @@
 from tkinter import *
+from tkinter import messagebox
 import os
+import subprocess
+import time
 
 
-# Ventana
+
+#-----Window-----
 win = Tk()
 win.title("Hades")
 win.resizable(width=False, height=False)
 win.geometry("900x600")
-win.configure(background="Black")
-win.iconbitmap("UI/windowicon.ico")
+win.configure(background="grey13")
+win.iconbitmap("icon.ico")
+
+#--App Version---
+
+def aver():
+    global appver
+    aversion = "v2.0"
+    appver = Label(win, text=aversion, font="sans 11", highlightthickness=0, borderwidth=0, width=3, height=1, bg="grey13", fg="indianred")
+    appver.place(x=817, y=570)
+#-----Welcome------
+def console_welcome():
+    print("---------------------------------------------")
+    print("▓▓▓   ▓▓▓    ▓▓▓    ▓▓▓▓▓    ▓▓▓▓▓▓   ▓▓▓▓▓")
+    print("▓▓▓   ▓▓▓  ▓▓   ▓▓  ▓▓   ▓▓  ▓▓      ▓▓")
+    print("▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓  ▓▓   ▓▓  ▓▓▓▓▓▓   ▓▓▓▓ ")
+    print("▓▓▓   ▓▓▓  ▓▓   ▓▓  ▓▓   ▓▓  ▓▓          ▓▓")
+    print("▓▓▓   ▓▓▓  ▓▓   ▓▓  ▓▓▓▓▓    ▓▓▓▓▓▓  ▓▓▓▓▓ ")
+    print("---------------------------------------------")
+    print("                   v2.0")
+    print("---------------------------------------------")
 
 
-# App fondo
-fondoimg = PhotoImage(file="UI/w.png")
-fondoshow = Label(win, text="", image=fondoimg)
-fondoshow.pack()
+console_welcome()
+#-----start
+def new():
+    startpressed.place(x=15, y=15)
+    tilespressed.place_forget()
+    tiles.place(x=bbx, y=bby)
+    global news
+    power_options_hide()
+    news.place(x=71, y=0)
+    hide_buttons()
 
-# Welcome
-print("-----------------------------------------------")
-print("Hello " + os.getlogin() + "!!,Welcome to Hades")
-print("")
-print("Thanks for trying my program! c:")
-print("-Alan Burcet")
-print("")
-print("v1.0")
-print("-----------------------------------------------")
+def tiles_():
+    startpressed.place_forget()
+    tilespressed.place(x=bbx, y=bby)
+    news.place_forget()
+    show_buttons()
+    power_options()
+
+newsimg = PhotoImage(file="UI/version/version.png")
+news = Label(win, image=newsimg, highlightthickness=0, borderwidth=0, activebackground="indian red")
+
+#-----Bar------
+barimg = PhotoImage(file="UI/bar/bar.png")
+#-Images
+helpimg = PhotoImage(file="UI/bar/HELP.png")
+eraserimg = PhotoImage(file="UI/bar/eraser.png")
+tilesimg = PhotoImage(file="UI/bar/tiles.png")
+tilespressedimg = PhotoImage(file="UI/bar/tiles_pressed.png")
+startimg = PhotoImage(file="UI/bar/start.png")
+startpressedimg = PhotoImage(file="UI/bar/startpressed.png")
+setimg = PhotoImage(file="UI/bar/settings.png")
+def bar():
+    global bar,tiles,tilespressed,eraser,help,start,startpressed,settings,bbx,bby,bby2,bby3
+    bar = Label(win, text="", image=barimg, highlightthickness=0, borderwidth=0)
+    bar.pack(side="left")
+    # -Buttons
+    tiles = Button(win, width=30, height=29, highlightthickness=0, borderwidth=0, image=tilesimg,
+                   activebackground="grey13", command=lambda: tiles_())
+    tilespressed = Label(win, width=30, height=29, highlightthickness=0, borderwidth=0, image=tilespressedimg)
+    eraser = Button(win, width=30, height=26, highlightthickness=0, borderwidth=0, image=eraserimg,
+                    activebackground="indianred",
+                    command=lambda: os.system("cls"))
+    help = Button(win, text="HELP", width=30, height=30, highlightthickness=0, borderwidth=0, image=helpimg,
+                  activebackground="grey13",
+                  command=lambda: os.system("help"))
+    start = Button(win, text="HELP", width=40, height=61, highlightthickness=0, borderwidth=0, image=startimg,
+                   bg="brown3", activebackground="indianred",
+                   command=lambda: new())
+    startpressed = Label(win, width=40, height=61, highlightthickness=0, borderwidth=0, image=startpressedimg)
+    settings = Button(win, width=30, height=30, highlightthickness=0, borderwidth=0, image=setimg, activebackground="indianred", command= lambda: set())
+    # -Position
+
+    bbx = 21
+    bby = 200
+    bby2 = bby + 50
+    bby3 = bby2 + 50
+
+    tilespressed.place(x=bbx, y=bby)
+    eraser.place(x=bbx, y=bby2)
+    help.place(x=bbx, y=bby3)
+    start.place(x=15, y=15)
+    settings.place(x=21, y=550)
 
 
-#************Botones**************
+def hide_bar():
+    bar.place_forget()
+    tiles.place_forget()
+    tilespressed.place_forget()
+    eraser.place_forget()
+    help.place_forget()
+    start.place_forget()
+    startpressed.place_forget()
+    settings.place_forget()
 
-# SystemInfo
-systeminfoimg = PhotoImage(file="UI/systeminfo.png")
-systeminfo = Button(win, text="SYSTEMINFO", image=systeminfoimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("systeminfo"))
-systeminfo.place(x=35, y=150)
+bar()
 
-# REGEDIT
-regimg = PhotoImage(file="UI/regedit.png")
-regedit = Button(win, text="REGEDIT", image=regimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("regedit"))
-regedit.place(x=35, y=461)
 
-# MSCONFIG
-msconfigimg = PhotoImage(file="UI/msconfig.png")
-msconfig = Button(win, text="MSCONFIG", image=msconfigimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("msconfig"))
-msconfig.place(x=35, y=253)
+#-----Settings-----
+def set():
+    global setback, eye
+    hide_bar()
+    setback = Button(win, width="4", height="1", text="◄", font="sans 20", highlightthickness=0, borderwidth=0, bg="indian red", fg="grey13", activebackground="indianred", command= lambda: back_to_menu())
+    setback.place(x=1, y=550)
+    eye = Button(win, width=40, height=20, image=eyeimg, highlightthickness=0, borderwidth=0, activebackground="indian red", command=lambda: colorblindness())
+    eye.place(x=15, y=25)
+    colorblindness()
+eyeimg = PhotoImage(file="UI/settings/eye.png")
+eye_pressedimg = PhotoImage(file="UI/settings/eye_pressed.png")
 
-# SERVICES
-servicesimg = PhotoImage(file="UI/services.png")
-services = Button(win, text="services", width=150, height=67, highlightthickness= 0, borderwidth=0, image=servicesimg, command= lambda: os.system("services.msc"))
-services.place(x=35, y=357)
+#-----colorblindness-----
+def colorblindness():
+    global setcolorblind,colorblindbar, switch_disabled,eye_pressed
+    eye_pressed = Label(win,width=40, height=20, image=eye_pressedimg, highlightthickness=0, borderwidth=0)
+    eye_pressed.place(x=15, y=25)
+    setcolorblind = "active"
+    colorblindbar = Label(win, width=200, height=600, highlightthickness=0, borderwidth=0, image=colorblindnessimg)
+    colorblindbar.place(x=70, y=0)
+    switch_disabled = Button(win, width=50, height=28, image=switch_disabledimg, borderwidth=0, highlightthickness=0, command=lambda: deuteranopia_mode())
+    switch_disabled.place(x=220, y=355)
+colorblindnessimg = PhotoImage(file="UI/settings/colorblindness.png")
+switch_disabledimg = PhotoImage(file="UI/settings/switch disabled.png")
 
-# Administrador de tareas
-adminimg = PhotoImage(file="UI/taskmgr.png")
-admin = Button(win, text="TASKMGR", width=150, height=67, highlightthickness= 0, borderwidth=0, image=adminimg, command= lambda: os.system("taskmgr"))
-admin.place(x=205, y=150)
+def deuteranopia_mode():
+    #--columna 1---
+    systeminfo.config(bg="orchid4", image=systeminfo_deu)
+    services.config(bg="grey", image=services_deu)
+    # --columna 2--
+    keyboard.config(bg="yellow3", image=keyboard_deu)
+    # --columna 3--
+    charmap.config(bg="hot pink", image=charmap_deu)
+    opt.config(bg="orchid3", image=opt_deu)
+    # --columna4--
+    main.config(bg="Slateblue3", image=main_deu)
+    controlpanel.config(bg="orchid3", image=controlpanel_deu)
+    calculator.config(bg="yellow3", image=calculator_deu)
+systeminfo_deu = PhotoImage(file="UI/tiles/deuteracromia/SYSTEMINFO.png")
+services_deu = PhotoImage(file="UI/tiles/deuteracromia/SERVICES.png")
+keyboard_deu = PhotoImage(file="UI/tiles/deuteracromia/OSK.png")
+charmap_deu = PhotoImage(file="UI/tiles/deuteracromia/CHARMAP.png")
+opt_deu = PhotoImage(file="UI/tiles/deuteracromia/OPTF.png")
+main_deu = PhotoImage(file="UI/tiles/deuteracromia/MAIN.png")
+controlpanel_deu = PhotoImage(file="UI/tiles/deuteracromia/CONTROLPANEL.png")
+calculator_deu = PhotoImage(file="UI/tiles/deuteracromia/CALCULATOR.png")
 
-# Administrador de Dispositivos
-admindispimg = PhotoImage(file="UI/devmgmt.png")
-admindisp = Button(win, text="DEVMGMT.MSC", image=admindispimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("DEVMGMT.MSC"))
-admindisp.place(x=205, y=253)
+def back_to_menu():
+    eye_pressed.place_forget()
+    colorblindbar.place_forget()
+    switch_disabled.place_forget()
+    setback.place_forget()
+    eye.place_forget()
+    tiles.place(x=bbx, y=bby)
+    eraser.place(x=bbx, y=bby2)
+    help.place(x=bbx, y=bby3)
+    start.place(x=15, y=15)
+    settings.place(x=21, y=550)
 
-# KEYBOARD
-kimg = PhotoImage(file="UI/osk.png")
-keyboard = Button(win, text="OSK", width=150, height=67, highlightthickness= 0, borderwidth=0, image= kimg, command= lambda: os.system("osk"))
-keyboard.place(x=205, y=357)
 
-# EXPLORER
-explorerimg = PhotoImage(file="UI/explorer.png")
-explorer = Button(win, text="EXPLORER", image=explorerimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("explorer"))
-explorer.place(x=205, y=461)
+#-----Tile Buttons------#
 
-# Snipping Tool
-snippingimg = PhotoImage(file="UI/snippingtool.png")
-snipping = Button(win, text="snippingtool", image=snippingimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("snippingtool"))
-snipping.place(x=375, y=150)
+#-Size
+width = 165
+height = 43
 
-# DRIVERQUERY
-driverimg = PhotoImage(file="UI/driverquery.png")
-driver = Button(win, text="driverquery", width=150, height=67, highlightthickness= 0, borderwidth=0, image= driverimg, command= lambda: os.system("driverquery"))
-driver.place(x=375, y=357)
+#-Images
+systeminfoimg = PhotoImage(file="UI/tiles/SYSTEMINFO.png")
+msconfigimg = PhotoImage(file="UI/tiles/msconfig.png")
+servicesimg = PhotoImage(file="UI/tiles/SERVICES.png")
+regimg = PhotoImage(file="UI/tiles/regedit.png")
+adminimg = PhotoImage(file="UI/tiles/taskmgr.png")
+admindispimg = PhotoImage(file="UI/tiles/devmgmt.png")
+kimg = PhotoImage(file="UI/tiles/osk.png")
+explorerimg = PhotoImage(file="UI/tiles/explorer.png")
+snippingimg = PhotoImage(file="UI/tiles/snippingtool.png")
+ipconfigimg = PhotoImage(file="UI/tiles/ipconfig.png")
+driverimg = PhotoImage(file="UI/tiles/driverquery.png")
+appdataimg = PhotoImage(file="UI/tiles/APPDATA.png")
+diskimg = PhotoImage(file="UI/tiles/diskmgmt.png")
+charmapimg = PhotoImage(file="UI/tiles/charmap.png")
+optimg = PhotoImage(file="UI/tiles/optionalfeatures.png")
+mainimg = PhotoImage(file="UI/tiles/main.png")
+controlimg = PhotoImage(file="UI/tiles/CONTROLPANEL.png")
+notepadimg = PhotoImage(file="UI/tiles/notepad.png")
+paintimg = PhotoImage(file="UI/tiles/MSPAINT.png")
+calculatorimg = PhotoImage(file="UI/tiles/CALC.png")
+#-Buttons
 
-# APPDATA
-appdataimg = PhotoImage(file="UI/APPDATA.png")
-appdata = Button(win, text="APPDATA", image=appdataimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("start C:/Users/" + os.getlogin() + "/AppData"))
-appdata.place(x=375, y=461)
+systeminfo = Button(win, text=" SYSTEMINFO   ", font="Helvetica", image=systeminfoimg, bg="Slateblue3",
+                    activebackground="Slateblue4", activeforeground="white", fg="white", compound="left", width=width,
+                    height=height, borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("systeminfo", shell=True))
+msconfig = Button(win, text="  MSCONFIG      ", font="Helvetica", image=msconfigimg, bg="cornflower blue",
+                  activebackground="royal blue", activeforeground="white", fg="white", compound="left", width=width,
+                  height=height, borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("msconfig", shell=True))
 
-# DISK MANAGEMENT
-diskimg = PhotoImage(file="UI/diskmgmt.png")
-disk = Button(win, text="diskmgmt", image=diskimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("diskmgmt.msc"))
-disk.place(x=545, y=150)
 
-# IPCONFIG
-ipconfigimg = PhotoImage(file="UI/ipconfig.png")
-ipconfig = Button(win, text="ipconfig", image=ipconfigimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("ipconfig /all"))
-ipconfig.place(x=375, y=253)
+services = Button(win, text="  SERVICES       ", font="Helvetica", image=servicesimg, bg="Cadet Blue3", fg="white",
+                  activebackground="cyan4", activeforeground="white", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("services.msc", shell=True))
 
-# CHARMAP
-charmapimg = PhotoImage(file="UI/charmap.png")
-charmap = Button(win, text="Charmap", image=charmapimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("charmap"))
-charmap.place(x=545, y=253)
+regedit = Button(win, text="  REGEDIT          ", font="Helvetica", image=regimg, bg="skyblue1", fg="white",
+                 activeforeground="white", activebackground="deepskyblue", compound="left", width=width, height=height,
+                 borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("regedit", shell=True))
 
-# Optional Features
-optimg = PhotoImage(file="UI/optionalfeatures.png")
-opt = Button(win, text="OPT", width=150, height=67, highlightthickness= 0, borderwidth=0, image= optimg, command= lambda: os.system("optionalfeatures"))
-opt.place(x=545, y=357)
+admin = Button(win, text="  TASKMGR       ", font="Helvetica", image=adminimg, bg="Palegreen3",
+               activebackground="Palegreen4", activeforeground="white", fg="white", compound="left", width=width,
+               height=height, borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("taskmgr", shell=True))
 
-# MAIN
-mainimg = PhotoImage(file="UI/main.png")
-main = Button(win, text="main", width=150, height=67, highlightthickness= 0, borderwidth=0, image= mainimg, command= lambda: os.system("main.cpl"))
-main.place(x=545, y=461)
+admindisp = Button(win, text="  DEVMGMT         ", activebackground="green4", activeforeground="white",
+                   font="Helvetica", image=admindispimg, bg="Palegreen4", fg="white", compound="left", width=width,
+                   height=height, borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("DEVMGMT.MSC", shell=True))
 
-# CONTROL PANEL
-controlimg = PhotoImage(file="UI/control panel.png")
-controlpanel = Button(win, text="Control Panel", image=controlimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("control panel"))
-controlpanel.place(x=714, y=150)
+keyboard = Button(win, text="  OSK                   ", font="Helvetica", image=kimg, bg="yellow green", fg="white",
+                  activeforeground="white", activebackground="chartreuse4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("osk", shell=True))
 
-# NOTEPAD
-notepadimg = PhotoImage(file="UI/notepad.png")
-notepad = Button(win, text="NOTEPAD", image=notepadimg, width=150, height=67,borderwidth=0, highlightthickness= 0, command= lambda: os.system("notepad"))
-notepad.place(x=714, y=253)
+explorer = Button(win, text="  EXPLORER     ", font="Helvetica", image=explorerimg, bg="khaki3", fg="white",
+                  activeforeground="white", activebackground="khaki4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("explorer", shell=True))
 
-# HELP
-helpimg = PhotoImage(file="UI/help.png")
-help = Button(win, text="HELP", width=150, height=67, highlightthickness= 0, borderwidth=0, image= helpimg, command= lambda: os.system("help"))
-help.place(x=714, y=357)
+snipping = Button(win, text="  SNIPPING TOOL  ", font="Helvetica 10 ", image=snippingimg, bg="chocolate3",
+                  fg="white", activeforeground="white", activebackground="tan4", compound="left", width=width,
+                  height=height, borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("snippingtool", shell=True))
+ipconfig = Button(win, text="  IPCONFIG         ", font="Helvetica", image=ipconfigimg, bg="tan2", fg="white",
+                  activeforeground="white", activebackground="sienna4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("ipconfig /all", shell=True))
+driver = Button(win, text="  DRIVERQUERY   ", font="Helvetica 10", image=driverimg, bg="darkorange3", fg="white",
+                  activeforeground="white", activebackground="sienna4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("driverquery", shell=True))
+appdata = Button(win, text="  APPDATA       ", font="Helvetica", image=appdataimg, bg="indianred3", fg="white",
+                  activeforeground="white", activebackground="indianred4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0,command=lambda: subprocess.Popen("start C:/Users/" + os.getlogin() + "/AppData", shell=True))
 
-# CLR
-clsimg = PhotoImage(file="UI/cls.png")
-cls = Button(win, text="clr", width=150, height=67, highlightthickness= 0, borderwidth=0, image= clsimg, command= lambda: os.system("cls"))
-cls.place(x=714, y=461)
+disk = Button(win, text="  DISKMGMT       ", font="Helvetica", image=diskimg, bg="orchid1", fg="white",
+                  activeforeground="white", activebackground="orchid4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0,command=lambda: subprocess.Popen("diskmgmt.msc", shell=True))
+charmap = Button(win, text="  CHARMAP       ", font="Helvetica", image=charmapimg, bg="medium orchid", fg="white",
+                  activeforeground="white", activebackground="orchid3", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("charmap", shell=True))
+opt = Button(win, text="  OPTF                 ", font="Helvetica", image=optimg, bg="slateblue1", fg="white",
+                  activeforeground="white", activebackground="dark slate blue", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("optionalfeatures", shell=True))
+main = Button(win, text="  MAIN                  ", font="Helvetica", image=mainimg, bg="medium blue", fg="white",
+                  activeforeground="white", activebackground="navy", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("main.cpl", shell=True))
+controlpanel = Button(win, text=" CONTROL PANEL  ", font="Helvetica 10", image=controlimg, bg="royal blue", fg="white",
+                  activeforeground="white", activebackground="royalblue4", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("control panel", shell=True))
+notepad = Button(win, text="  NOTEPAD        ", font="Helvetica", image=notepadimg, bg="steelblue2", fg="white",
+                  activeforeground="white", activebackground="steel blue", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("notepad", shell=True))
+paint = Button(win, text="       PAINT          ", font="Helvetica", image=paintimg, bg="deep sky blue2", fg="white",
+                  activeforeground="white", activebackground="turquoise3", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("mspaint", shell=True))
+calculator = Button(win, text=" CALCULATOR ", font="Helvetica", image=calculatorimg, bg="pale green", fg="white",
+                  activeforeground="white", activebackground="seagreen3", compound="left", width=width, height=height,
+                  borderwidth=0, highlightthickness=0, command=lambda: subprocess.Popen("calc", shell=True))
 
-#*****Botones de arriba****
+# -----Show/Hide/Edit Buttons-----#
+def show_buttons():
+    # ** valores en x**
+    columna1 = 100
+    columna2 = columna1 + 195
+    columna3 = columna2 + 195
+    columna4 = columna3 + 195
+    # **valores en y**
+    fila1 = 140
+    fila2 = fila1 + 70
+    fila3 = fila2 + 70
+    fila4 = fila3 + 70
+    fila5 = fila4 + 70
+    # --columna 1--
+    systeminfo.place(x=columna1, y=fila1)
+    msconfig.place(x=columna1, y=fila2)
+    services.place(x=columna1, y=fila3)
+    regedit.place(x=columna1, y=fila4)
+    admin.place(x=columna1, y=fila5)
+    # --columna 2--
+    admindisp.place(x=columna2, y=fila1)
+    keyboard.place(x=columna2, y=fila2)
+    explorer.place(x=columna2, y=fila3)
+    snipping.place(x=columna2, y=fila4)
+    ipconfig.place(x=columna2, y=fila5)
+    # --columna 3--
+    driver.place(x=columna3, y=fila1)
+    appdata.place(x=columna3, y=fila2)
+    disk.place(x=columna3, y=fila3)
+    charmap.place(x=columna3, y=fila4)
+    opt.place(x=columna3, y=fila5)
+    # --columna4--
+    main.place(x=columna4, y=fila1)
+    controlpanel.place(x=columna4, y=fila2)
+    notepad.place(x=columna4, y=fila3)
+    paint.place(x=columna4, y=fila4)
+    calculator.place(x=columna4, y=fila5)
 
-# RESTART
-restimg = PhotoImage(file="UI/restart.png")
-restart = Button(win, text="RESTART", image=restimg, width=43, height=45,borderwidth=0, highlightthickness= 0, command= lambda: os.system("shutdown /r"))
-restart.place(x=855, y=35)
 
-#shutdown
-shutimg = PhotoImage(file="UI/shutdown.png")
-shut = Button(win, text="SHUTDOWN", image=shutimg, width=43, height=45,borderwidth=0, highlightthickness= 0, command= lambda: os.system("shutdown /s"))
-shut.place(x=800, y=35)
+def hide_buttons():
+    # --columna 1--
+    systeminfo.place_forget()
+    msconfig.place_forget()
+    services.place_forget()
+    regedit.place_forget()
+    admin.place_forget()
+    # --columna 2--
+    admindisp.place_forget()
+    keyboard.place_forget()
+    explorer.place_forget()
+    snipping.place_forget()
+    ipconfig.place_forget()
+    # --columna 3--
+    driver.place_forget()
+    appdata.place_forget()
+    disk.place_forget()
+    charmap.place_forget()
+    opt.place_forget()
+    # --columna4--
+    main.place_forget()
+    controlpanel.place_forget()
+    notepad.place_forget()
+    paint.place_forget()
+    calculator.place_forget()
 
-# sleep
+show_buttons()
+
+
+# ------Power Buttons (Shutdown,Sleep,Restart)------#
+def power_options():
+    global restart, shut, sleep
+    # ----Size----#
+    width2 = 25
+    height2 = 25
+    # ------Buttons---------#
+    restart = Button(win, activebackground="grey10", text="RESTART", image=restimg, width=width2, height=height2,
+                     borderwidth=0, highlightthickness=0, command=lambda: os.system("shutdown /r"))
+    shut = Button(win, activebackground="grey10", text="SHUTDOWN", image=shutimg, width=width2, height=height2,
+                  borderwidth=0, highlightthickness=0, command=lambda: os.system("shutdown /s"))
+
+    sleep = Button(win, activebackground="grey10", text="SLEEP", image=sleepimg, width=width2, height=height2,
+                   borderwidth=0, highlightthickness=0, command=lambda: os.system("shutdown /l"))
+
+    # ------Coordenates-----#
+    space = 745
+    space2 = space + 40
+    space3 = space2 + 40
+    # --
+    sleep.place(x=space, y=35)
+    shut.place(x=space2, y=35)
+    restart.place(x=space3, y=35)
+    #--
+
+def power_options_hide():
+    sleep.place_forget()
+    shut.place_forget()
+    restart.place_forget()
+
+
 sleepimg = PhotoImage(file="UI/sleep.png")
-sleep = Button(win, text="SLEEP", image=sleepimg, width=43, height=45, borderwidth=0, highlightthickness=0,command=lambda: os.system("shutdown /l"))
-sleep.place(x=745, y=35)
+shutimg = PhotoImage(file="UI/shutdown.png")
+restimg = PhotoImage(file="UI/restart.png")
+power_options()
+#-----Loading Screen-----
+#time.sleep(2)
+#loadimg = PhotoImage(file="UI/loading/loading screen.png")
+#load = Label(win, image=loadimg, highlightthickness=0, borderwidth=0)
+#load.place(x=0, y=0)
+#load.place_forget()
 
+
+# End Window
 win.mainloop()
